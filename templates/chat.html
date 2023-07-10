@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+</head>
+<body>
+    <h1>Chat</h1>
+    <div id="chat-log"></div>
+    <input type="text" id="message-input">
+    <button id="send-button">Send</button>
+
+    <script type="text/javascript">
+        var socket = io();
+
+        var chatLog = document.getElementById('chat-log');
+        var messageInput = document.getElementById('message-input');
+        var sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', function() {
+            var message = messageInput.value;
+            if (message.trim() !== '') {
+                appendMessage('You: ' + message);
+                socket.emit('chat_message', message);
+                messageInput.value = '';
+            }
+        });
+
+        socket.on('chat_response', function(data) {
+            var message = data.message;
+            appendMessage('Chatbot: ' + message);
+        });
+
+        function appendMessage(message) {
+            var messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            chatLog.appendChild(messageElement);
+        }
+    </script>
+</body>
+</html>

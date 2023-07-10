@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Take Order</title>
+</head>
+<body>
+    <h1>Take Order</h1>
+    <form method="post" action="{{ url_for('take_order') }}">
+        <label for="customer_name">Customer Name:</label>
+        <input type="text" id="customer_name" name="customer_name" required><br><br>
+        <label for="dish_ids">Select Dishes:</label><br>
+        {% for dish in dishes %}
+            <input type="checkbox" id="dish_{{ dish._id }}" name="dish_ids[]" value="{{ dish._id }}">
+            <label for="dish_{{ dish._id }}">{{ dish.name }} - {{ dish.price }}</label><br>
+        {% endfor %}
+        <br>
+        <input type="submit" value="Place Order">
+    </form>
+</body>
+</html>
